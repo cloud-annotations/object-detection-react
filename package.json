@@ -1,0 +1,23 @@
+{
+  "name": "tensorflowjs-object-detection",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "main": "src/index.js",
+  "dependencies": {
+    "@tensorflow-models/coco-ssd": "0.1.1",
+    "@tensorflow/tfjs": "0.14.0",
+    "react": "16.5.2",
+    "react-dom": "16.5.2",
+    "react-magic-dropzone": "1.0.1",
+    "react-scripts": "2.0.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test --env=jsdom",
+    "eject": "react-scripts eject"
+  },
+  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+}
