@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom'
 import * as tf from '@tensorflow/tfjs'
 import './styles.css'
 
-const MODEL_URL = './web_model/tensorflowjs_model.pb'
-const WEIGHTS_URL = './web_model/weights_manifest.json'
-const LABELS = ['Pepsi', 'Mountain Dew', 'Coke']
+const LABELS_URL = process.env.PUBLIC_URL + '/labels.json'
+const MODEL_URL = process.env.PUBLIC_URL + '/web_model/tensorflowjs_model.pb'
+const WEIGHTS_URL = process.env.PUBLIC_URL + '/web_model/weights_manifest.json'
 
 const TFWrapper = model => {
   const calculateMaxScores = (scores, numBoxes, numClasses) => {
@@ -141,11 +141,12 @@ class App extends React.Component {
             }
           })
         })
-
       const modelPromise = tf.loadFrozenModel(MODEL_URL, WEIGHTS_URL)
-      Promise.all([modelPromise, webCamPromise])
+      const labelsPromise = fetch(LABELS_URL).then(data => data.json())
+      Promise.all([modelPromise, labelsPromise, webCamPromise])
         .then(values => {
-          this.detectFrame(this.videoRef.current, values[0])
+          const [model, labels] = values
+          this.detectFrame(this.videoRef.current, model, labels)
         })
         .catch(error => {
           console.error(error)
@@ -153,18 +154,18 @@ class App extends React.Component {
     }
   }
 
-  detectFrame = (video, model) => {
+  detectFrame = (video, model, labels) => {
     TFWrapper(model)
       .detect(video)
       .then(predictions => {
-        this.renderPredictions(predictions)
+        this.renderPredictions(predictions, labels)
         requestAnimationFrame(() => {
-          this.detectFrame(video, model)
+          this.detectFrame(video, model, labels)
         })
       })
   }
 
-  renderPredictions = predictions => {
+  renderPredictions = (predictions, labels) => {
     const ctx = this.canvasRef.current.getContext('2d')
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     // Font options.
@@ -176,7 +177,7 @@ class App extends React.Component {
       const y = prediction.bbox[1]
       const width = prediction.bbox[2]
       const height = prediction.bbox[3]
-      const label = LABELS[parseInt(prediction.class)]
+      const label = labels[parseInt(prediction.class)]
       // Draw the bounding box.
       ctx.strokeStyle = '#00FFFF'
       ctx.lineWidth = 4
@@ -191,7 +192,7 @@ class App extends React.Component {
     predictions.forEach(prediction => {
       const x = prediction.bbox[0]
       const y = prediction.bbox[1]
-      const label = LABELS[parseInt(prediction.class)]
+      const label = labels[parseInt(prediction.class)]
       // Draw the text last to ensure it's on top.
       ctx.fillStyle = '#000000'
       ctx.fillText(label, x, y)
