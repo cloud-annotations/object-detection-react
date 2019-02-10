@@ -15,7 +15,7 @@ cd object-detection-react-app
 > **Note: You’ll need to have Node 8.10.0 or later on your local development machine.** You can use [nvm](https://github.com/creationix/nvm#installation) (macOS/Linux) or [nvm-windows](https://github.com/coreybutler/nvm-windows#node-version-manager-nvm-for-windows) to easily switch Node versions between different projects.
 
 ## Add TensorFlow.js Model to the App
-Copy the `model_web` directory and the `labels.json` file generated from the previous steps and paste it into the `public` folder of this new repo.
+Copy the `model_web` directory generated from the object detection walkthrough and paste it into the `public` folder of this repo.
 
 ## Run the App
 ### `npm start`
