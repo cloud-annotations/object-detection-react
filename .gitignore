@@ -1,5 +1,4 @@
-/public/web_model/*
-/public/labels.json
+/public/model_web
 
 # Logs
 logs

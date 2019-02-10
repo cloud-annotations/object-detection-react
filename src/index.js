@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom'
 import * as tf from '@tensorflow/tfjs'
 import './styles.css'
 
-const LABELS_URL = process.env.PUBLIC_URL + '/labels.json'
-const MODEL_URL = process.env.PUBLIC_URL + '/web_model/tensorflowjs_model.pb'
-const WEIGHTS_URL = process.env.PUBLIC_URL + '/web_model/weights_manifest.json'
+const LABELS_URL = process.env.PUBLIC_URL + '/model_web/labels.json'
+const MODEL_URL = process.env.PUBLIC_URL + '/model_web/tensorflowjs_model.pb'
+const WEIGHTS_URL = process.env.PUBLIC_URL + '/model_web/weights_manifest.json'
 
 const TFWrapper = model => {
   const calculateMaxScores = (scores, numBoxes, numClasses) => {
