@@ -4,9 +4,9 @@ import ReactDOM from 'react-dom'
 import * as tf from '@tensorflow/tfjs'
 import './styles.css'
 
-const LABELS_URL = process.env.PUBLIC_URL + '/model_web/labels.json'
-const MODEL_URL = process.env.PUBLIC_URL + '/model_web/tensorflowjs_model.pb'
-const WEIGHTS_URL = process.env.PUBLIC_URL + '/model_web/weights_manifest.json'
+const MODEL_URL = process.env.PUBLIC_URL + '/model_web/'
+const LABELS_URL = MODEL_URL + 'labels.json'
+const MODEL_JSON = MODEL_URL + 'model.json'
 
 const TFWrapper = model => {
   const calculateMaxScores = (scores, numBoxes, numClasses) => {
@@ -61,7 +61,7 @@ const TFWrapper = model => {
 
   const detect = input => {
     const batched = tf.tidy(() => {
-      const img = tf.fromPixels(input)
+      const img = tf.browser.fromPixels(input)
       // Reshape to a single-element batch so we can pass it to executeAsync.
       return img.expandDims(0)
     })
@@ -141,7 +141,8 @@ class App extends React.Component {
             }
           })
         })
-      const modelPromise = tf.loadFrozenModel(MODEL_URL, WEIGHTS_URL)
+
+      const modelPromise = tf.loadGraphModel(MODEL_JSON)
       const labelsPromise = fetch(LABELS_URL).then(data => data.json())
       Promise.all([modelPromise, labelsPromise, webCamPromise])
         .then(values => {
