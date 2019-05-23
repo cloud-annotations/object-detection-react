@@ -7,7 +7,7 @@ You can find an in depth walkthrough for training a TensorFlow.js model [here](h
 
 ```bash
 git clone https://github.com/cloud-annotations/object-detection-react.git
-cd object-detection-react-app
+cd object-detection-react
 ```
 
 ### `npm install`
