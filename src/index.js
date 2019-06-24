@@ -8,6 +8,8 @@ const MODEL_URL = process.env.PUBLIC_URL + '/model_web/'
 const LABELS_URL = MODEL_URL + 'labels.json'
 const MODEL_JSON = MODEL_URL + 'model.json'
 
+const VIDEO = process.env.PUBLIC_URL + '/video.mov'
+
 const TFWrapper = model => {
   const calculateMaxScores = (scores, numBoxes, numClasses) => {
     const maxes = []
@@ -124,35 +126,16 @@ class App extends React.Component {
   canvasRef = React.createRef()
 
   componentDidMount() {
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-      const webCamPromise = navigator.mediaDevices
-        .getUserMedia({
-          audio: false,
-          video: {
-            facingMode: 'user'
-          }
-        })
-        .then(stream => {
-          window.stream = stream
-          this.videoRef.current.srcObject = stream
-          return new Promise((resolve, _) => {
-            this.videoRef.current.onloadedmetadata = () => {
-              resolve()
-            }
-          })
-        })
-
-      const modelPromise = tf.loadGraphModel(MODEL_JSON)
-      const labelsPromise = fetch(LABELS_URL).then(data => data.json())
-      Promise.all([modelPromise, labelsPromise, webCamPromise])
-        .then(values => {
-          const [model, labels] = values
-          this.detectFrame(this.videoRef.current, model, labels)
-        })
-        .catch(error => {
-          console.error(error)
-        })
-    }
+    const modelPromise = tf.loadGraphModel(MODEL_JSON)
+    const labelsPromise = fetch(LABELS_URL).then(data => data.json())
+    Promise.all([modelPromise, labelsPromise])
+      .then(values => {
+        const [model, labels] = values
+        this.detectFrame(this.videoRef.current, model, labels)
+      })
+      .catch(error => {
+        console.error(error)
+      })
   }
 
   detectFrame = (video, model, labels) => {
@@ -167,36 +150,65 @@ class App extends React.Component {
   }
 
   renderPredictions = (predictions, labels) => {
+    console.log(predictions)
     const ctx = this.canvasRef.current.getContext('2d')
     ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
     // Font options.
-    const font = '16px sans-serif'
-    ctx.font = font
-    ctx.textBaseline = 'top'
+    // const font = '90px sans-serif'
+    // ctx.font = font
+    // ctx.textBaseline = 'top'
+    // predictions.forEach(prediction => {
+    //   const x = prediction.bbox[0]
+    //   const y = prediction.bbox[1]
+    //   const width = prediction.bbox[2]
+    //   const height = prediction.bbox[3]
+    //   // const label = labels[parseInt(prediction.class)]
+    //   // Draw the bounding box.
+    //   ctx.strokeStyle = '#00FFFF'
+    //   ctx.lineWidth = 4
+    //   ctx.strokeRect(x, y, width, height)
+    //   // Draw the label background.
+    //   // ctx.fillStyle = '#00FFFF'
+    //   // const textWidth = ctx.measureText(label).width
+    //   // const textHeight = parseInt(font, 10) // base 10
+    //   // ctx.fillRect(x, y, textWidth + 4, textHeight + 4)
+    // })
+
     predictions.forEach(prediction => {
       const x = prediction.bbox[0]
       const y = prediction.bbox[1]
       const width = prediction.bbox[2]
       const height = prediction.bbox[3]
-      const label = labels[parseInt(prediction.class)]
-      // Draw the bounding box.
-      ctx.strokeStyle = '#00FFFF'
-      ctx.lineWidth = 4
-      ctx.strokeRect(x, y, width, height)
-      // Draw the label background.
-      ctx.fillStyle = '#00FFFF'
+      // const emoji = ['🤞', '✌️', '☝️', '👌', '🤘', '✋', '🖖', '🤙']
+      // const label = '🍆' // labels[parseInt(prediction.class)]
+      // console.log()
+      // const label = emoji[parseInt(labels[parseInt(prediction.class)]) - 1]
+      // Draw the text last to ensure it's on top.
+
+      const font = `${Math.round(width / 1.2)}px sans-serif`
+      ctx.font = font
+      ctx.textBaseline = 'top'
+
+      const label = '🍆'
       const textWidth = ctx.measureText(label).width
       const textHeight = parseInt(font, 10) // base 10
-      ctx.fillRect(x, y, textWidth + 4, textHeight + 4)
-    })
 
-    predictions.forEach(prediction => {
-      const x = prediction.bbox[0]
-      const y = prediction.bbox[1]
-      const label = labels[parseInt(prediction.class)]
-      // Draw the text last to ensure it's on top.
+      const xOffset = textWidth - width / 2
+      const yOffset = textHeight - height
+
       ctx.fillStyle = '#000000'
-      ctx.fillText(label, x, y)
+      // ctx.fillRect(
+      //   x - xOffset,
+      //   y - yOffset - textHeight * 0.15,
+      //   textWidth,
+      //   textHeight
+      // )
+      ctx.fillText(
+        label,
+        x - xOffset + textHeight * 0.3,
+        y - yOffset + textHeight * 0.15
+      )
+      // ctx.fillText(label, x + width / 2, y + height / 2)
     })
   }
 
@@ -204,19 +216,21 @@ class App extends React.Component {
     return (
       <div>
         <video
+          src={VIDEO}
           className="size"
           autoPlay
+          loop
           playsInline
           muted
           ref={this.videoRef}
           width="600"
-          height="500"
+          height="335"
         />
         <canvas
           className="size"
           ref={this.canvasRef}
           width="600"
-          height="500"
+          height="335"
         />
       </div>
     )
