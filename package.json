@@ -5,10 +5,9 @@
   "keywords": [],
   "main": "src/index.js",
   "dependencies": {
-    "@tensorflow/tfjs": "1.0.0",
+    "@cloud-annotations/object-detection": "^0.0.3",
     "react": "16.5.2",
     "react-dom": "16.5.2",
-    "react-magic-dropzone": "1.0.1",
     "react-scripts": "2.0.3"
   },
   "devDependencies": {},
@@ -18,5 +17,10 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "browserslist": [">0.2%", "not dead", "not ie <= 11", "not op_mini all"]
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }
