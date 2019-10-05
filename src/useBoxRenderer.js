@@ -4,7 +4,7 @@ const renderPredictions = (predictions, canvasRef) => {
   const ctx = canvasRef.current.getContext('2d')
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
   // Font options.
-  const font = '16px sans-serif'
+  const font = '120px sans-serif'
   ctx.font = font
   ctx.textBaseline = 'top'
   predictions.forEach(prediction => {
@@ -17,10 +17,10 @@ const renderPredictions = (predictions, canvasRef) => {
     ctx.lineWidth = 4
     ctx.strokeRect(x, y, width, height)
     // Draw the label background.
-    ctx.fillStyle = '#00FFFF'
-    const textWidth = ctx.measureText(prediction.class).width
-    const textHeight = parseInt(font, 10) // base 10
-    ctx.fillRect(x, y, textWidth + 4, textHeight + 4)
+    // ctx.fillStyle = '#00FFFF'
+    // const textWidth = ctx.measureText(prediction.class).width
+    // const textHeight = parseInt(font, 10) // base 10
+    // ctx.fillRect(x, y, textWidth + 4, textHeight + 4)
   })
 
   predictions.forEach(prediction => {
@@ -28,7 +28,12 @@ const renderPredictions = (predictions, canvasRef) => {
     const y = prediction.bbox[1]
     // Draw the text last to ensure it's on top.
     ctx.fillStyle = '#000000'
-    ctx.fillText(prediction.class, x, y)
+
+    if (prediction.class === 'up') {
+      ctx.fillText('👍', x, y)
+    } else if (prediction.class === 'down') {
+      ctx.fillText('👎', x, y)
+    }
   })
 }
 
