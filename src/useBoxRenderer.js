@@ -1,4 +1,8 @@
 import { useEffect } from 'react'
+import * as tf from '@tensorflow/tfjs'
+
+const USE_GPU = true
+const USE_API = false
 
 const renderPredictions = (predictions, canvasRef) => {
   const ctx = canvasRef.current.getContext('2d')
@@ -38,14 +42,25 @@ const renderPredictions = (predictions, canvasRef) => {
 }
 
 const detectFrame = async (model, videoRef, canvasRef) => {
+  console.time('Detect')
   const predictions = await model.detect(videoRef.current)
-  renderPredictions(predictions, canvasRef)
-  requestAnimationFrame(() => {
-    detectFrame(model, videoRef, canvasRef)
-  })
+  if (USE_API) {
+    setTimeout(() => {
+      console.timeEnd('Detect')
+      renderPredictions(predictions, canvasRef)
+      detectFrame(model, videoRef, canvasRef)
+    }, 1000)
+  } else {
+    console.timeEnd('Detect')
+    renderPredictions(predictions, canvasRef)
+    requestAnimationFrame(() => {
+      detectFrame(model, videoRef, canvasRef)
+    })
+  }
 }
 
 const useBoxRenderer = (model, videoRef, canvasRef, shouldRender) => {
+  tf.setBackend(USE_GPU || USE_API ? 'webgl' : 'cpu')
   useEffect(() => {
     if (model && shouldRender) {
       detectFrame(model, videoRef, canvasRef)
