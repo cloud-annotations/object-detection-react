@@ -1,5 +1,12 @@
 import { useEffect } from 'react'
 
+const SCORE_DIGITS = 4
+
+const getLabelText = (prediction) => {
+    const scoreText = prediction.score.toFixed(SCORE_DIGITS)
+    return prediction.class + ', score: ' + scoreText
+}
+
 const renderPredictions = (predictions, canvasRef) => {
   const ctx = canvasRef.current.getContext('2d')
   ctx.clearRect(0, 0, ctx.canvas.width, ctx.canvas.height)
@@ -18,7 +25,7 @@ const renderPredictions = (predictions, canvasRef) => {
     ctx.strokeRect(x, y, width, height)
     // Draw the label background.
     ctx.fillStyle = '#00FFFF'
-    const textWidth = ctx.measureText(prediction.class).width
+    const textWidth = ctx.measureText(getLabelText(prediction)).width
     const textHeight = parseInt(font, 10) // base 10
     ctx.fillRect(x, y, textWidth + 4, textHeight + 4)
   })
@@ -28,7 +35,7 @@ const renderPredictions = (predictions, canvasRef) => {
     const y = prediction.bbox[1]
     // Draw the text last to ensure it's on top.
     ctx.fillStyle = '#000000'
-    ctx.fillText(prediction.class, x, y)
+    ctx.fillText(getLabelText(prediction), x, y)
   })
 }
 
