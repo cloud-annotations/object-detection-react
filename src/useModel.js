@@ -1,15 +1,15 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from "react";
 
-import objectDetector from '@cloud-annotations/object-detection'
+import models from "@cloud-annotations/models";
 
 const useModel = modelPath => {
-  const [model, setModel] = useState()
+  const [model, setModel] = useState();
   useEffect(() => {
-    objectDetector.load(modelPath).then(model => {
-      setModel(model)
-    })
-  }, [modelPath])
-  return model
-}
+    models.load(modelPath).then(model => {
+      setModel(model);
+    });
+  }, [modelPath]);
+  return model;
+};
 
-export default useModel
+export default useModel;
