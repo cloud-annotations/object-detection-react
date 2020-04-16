@@ -20,20 +20,13 @@ const App = () => {
   return (
     <>
       <video
-        className={styles.fixed}
+        className={styles.video}
         autoPlay
         playsInline
         muted
         ref={videoRef}
-        width="600"
-        height="500"
       />
-      <canvas
-        className={styles.fixed}
-        ref={canvasRef}
-        width="600"
-        height="500"
-      />
+      <canvas ref={canvasRef} />
     </>
   )
 }
