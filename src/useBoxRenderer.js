@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 
+const MIRROR = true
+
 const getRetinaContext = (canvas) => {
   const ctx = canvas.getContext('2d')
   const scale = window.devicePixelRatio
@@ -98,11 +100,17 @@ const renderPredictions = (predictions, videoRef, canvasRef) => {
   const textHeight = parseInt(font, 10) // base 10
 
   predictions.forEach((prediction) => {
-    const x = prediction.bbox[0] * scale + xOffset
+    let x = prediction.bbox[0] * scale + xOffset
     const y = prediction.bbox[1] * scale + yOffset
     const width = prediction.bbox[2] * scale
     const height = prediction.bbox[3] * scale
+
+    if (MIRROR) {
+      x = wantedWidth - x - width
+    }
+
     const predictionText = getLabelText(prediction)
+
     // Draw the bounding box.
     ctx.setStrokeStyle('#0062ff')
     ctx.setLineWidth(border)
@@ -125,8 +133,12 @@ const renderPredictions = (predictions, videoRef, canvasRef) => {
   })
 
   predictions.forEach((prediction) => {
-    const x = prediction.bbox[0] * scale + xOffset
+    let x = prediction.bbox[0] * scale + xOffset
     const y = prediction.bbox[1] * scale + yOffset
+    const width = prediction.bbox[2] * scale
+    if (MIRROR) {
+      x = wantedWidth - x - width
+    }
     const predictionText = getLabelText(prediction)
     // Draw the text last to ensure it's on top.
     ctx.setFillStyle('#ffffff')

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-const useWebcam = videoRef => {
+const useWebcam = (videoRef) => {
   const [webcamLoaded, setWebcamLoaded] = useState(false)
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -8,10 +8,12 @@ const useWebcam = videoRef => {
         .getUserMedia({
           audio: false,
           video: {
-            facingMode: 'user'
-          }
+            facingMode: 'user',
+            width: { ideal: 4096 },
+            height: { ideal: 2160 },
+          },
         })
-        .then(stream => {
+        .then((stream) => {
           // window.stream = stream
           videoRef.current.srcObject = stream
           videoRef.current.onloadedmetadata = () => {
