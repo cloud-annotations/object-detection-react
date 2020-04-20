@@ -1,8 +1,10 @@
 {
-  "name": "tensorflowjs-object-detection",
+  "name": "object-detection-react",
   "version": "1.0.0",
-  "description": "",
+  "description": "Real-time custom object detection with TensorFlow.js",
   "keywords": [],
+  "repository":"https://github.com/cloud-annotations/object-detection-react",
+  "license":"MIT",
   "main": "src/index.js",
   "dependencies": {
     "@cloud-annotations/models": "^0.1.0",

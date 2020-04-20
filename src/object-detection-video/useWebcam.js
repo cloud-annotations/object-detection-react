@@ -1,7 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
-const useWebcam = (videoRef) => {
-  const [webcamLoaded, setWebcamLoaded] = useState(false)
+const useWebcam = (videoRef, onLoaded) => {
   useEffect(() => {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
@@ -14,15 +13,13 @@ const useWebcam = (videoRef) => {
           },
         })
         .then((stream) => {
-          // window.stream = stream
           videoRef.current.srcObject = stream
           videoRef.current.onloadedmetadata = () => {
-            setWebcamLoaded(true)
+            onLoaded()
           }
         })
     }
-  }, [videoRef])
-  return webcamLoaded
+  }, [onLoaded, videoRef])
 }
 
 export default useWebcam

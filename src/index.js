@@ -1,33 +1,51 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 
-import useWebcam from './useWebcam'
 import useModel from './useModel'
-import useBoxRenderer from './useBoxRenderer'
+import ObjectDetectionVideo from './object-detection-video/ObjectDetectionVideo'
 
-import styles from './styles.module.css'
+const handlePrediction = (predictions) => {
+  console.timeEnd('detect')
+  console.time('detect')
+  console.log(predictions)
+}
 
-const MODEL_PATH = process.env.PUBLIC_URL + '/model_web'
+const render = (ctx, predictions) => {
+  predictions.forEach((prediction) => {
+    const x = prediction.bbox[0]
+    const y = prediction.bbox[1]
+    const width = prediction.bbox[2]
+    const height = prediction.bbox[3]
+
+    ctx.setStrokeStyle('#0062ff')
+    ctx.setLineWidth(4)
+    ctx.strokeRect(
+      Math.round(x),
+      Math.round(y),
+      Math.round(width),
+      Math.round(height)
+    )
+  })
+}
 
 const App = () => {
-  const videoRef = useRef()
-  const canvasRef = useRef()
-
-  const cameraLoaded = useWebcam(videoRef)
-  const model = useModel(MODEL_PATH)
-  useBoxRenderer(model, videoRef, canvasRef, cameraLoaded)
+  const model = useModel(process.env.PUBLIC_URL + '/model_web')
 
   return (
-    <>
-      <video
-        className={styles.video}
-        autoPlay
-        playsInline
-        muted
-        ref={videoRef}
-      />
-      <canvas ref={canvasRef} />
-    </>
+    <ObjectDetectionVideo
+      model={model}
+      // onPrediction={handlePrediction}
+      // render={render}
+      // aspectFill: The option to scale the video to fill the size of the view.
+      //             Some portion of the video may be clipped to fill the view's
+      //             bounds.
+      // aspectFit:  The option to scale the video to fit the size of the view
+      //             by maintaining the aspect ratio. Any remaining area of the
+      //             view's bounds is transparent.
+      fit="aspectFill"
+      // mirrored:   mirror the video about its vertical axis.
+      mirrored
+    />
   )
 }
 
