@@ -65,15 +65,12 @@ const ObjectDetectionVideo = React.memo(
     }, [fit, mirrored, model, onPrediction, render])
 
     if (canvasRef.current) {
-      canvasRef.current.style.position = 'fixed'
+      canvasRef.current.style.position = 'absolute'
       canvasRef.current.style.left = '0'
       canvasRef.current.style.top = '0'
     }
 
     if (videoRef.current) {
-      videoRef.current.style.position = 'fixed'
-      videoRef.current.style.left = '0'
-      videoRef.current.style.top = '0'
       videoRef.current.style.width = '100%'
       videoRef.current.style.height = '100%'
       if (fit === 'aspectFit') {
@@ -90,10 +87,10 @@ const ObjectDetectionVideo = React.memo(
     }
 
     return (
-      <>
+      <div style={{ position: 'relative' }}>
         <video autoPlay playsInline muted ref={videoRef} />
         <canvas ref={canvasRef} />
-      </>
+      </div>
     )
   }
 )
