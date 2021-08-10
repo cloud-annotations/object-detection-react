@@ -911,11 +911,17 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@cloud-annotations/models@^0.1.0":
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/@cloud-annotations/models/-/models-0.1.0.tgz#a50ab2055f599f5978e2fdfb669d5fbe05fd17c8"
-  integrity sha512-sUyk3b4A9YhZMSw1kwz2C2QSqVLVyooNt5AA6zQYEBOrwfaL/yIBjTyVac2/z6OPES5aVH/XSzS2MNHCh5AxCw==
+"@cloud-annotations/core@^0.1.8":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@cloud-annotations/core/-/core-0.1.9.tgz#773d06efa4b52489718c9429d976e4c91444a8bb"
+  integrity sha512-wNvavRsW9QUjJrqtQskwplv2CFSDm2xWRuUhN2sucGLL1kG0viA1r9pNHcs8rg3w4V3OkCoBoDTcNLK9ALipOA==
+
+"@cloud-annotations/models@^0.1.7":
+  version "0.1.9"
+  resolved "https://registry.yarnpkg.com/@cloud-annotations/models/-/models-0.1.9.tgz#88a980a6930d9ec3efc8bc4c30359854628d629d"
+  integrity sha512-Y7oAcPIEYnxaLV8054fu3puGDWsP0wRvyytSHJk+ht8/LLC50/s3iEAWSjR/iJ9UGlMK48dimBnhXuC4n4IZFA==
   dependencies:
+    "@cloud-annotations/core" "^0.1.8"
     "@tensorflow/tfjs" "1.4.0"
 
 "@cnakazawa/watch@^1.0.3":
@@ -6941,9 +6947,9 @@ path-key@^2.0.0, path-key@^2.0.1:
   integrity sha1-QRyttXTFoUDTpLGRDUDYDMn0C0A=
 
 path-parse@^1.0.6:
-  version "1.0.6"
-  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.6.tgz#d62dbb5679405d72c4737ec58600e9ddcf06d24c"
-  integrity sha512-GSmOT2EbHrINBf9SR7CDELwlJ8AENk3Qn7OikK4nFYAu3Ote2+JYNVvkpAEQm3/TLNEJFD/xZJjzyxg3KBWOzw==
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/path-parse/-/path-parse-1.0.7.tgz#fbc114b60ca42b30d9daf5858e4bd68bbedb6735"
+  integrity sha512-LDJzPVEEEPR+y48z93A0Ed0yXb8pAByGWo/k5YYdYgpY2/2EsOsksJrq7lOHxryrVOn1ejG6oAp8ahvOIQD8sw==
 
 path-to-regexp@0.1.7:
   version "0.1.7"
